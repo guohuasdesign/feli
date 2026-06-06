@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { IconChip } from '@/components/IconChip';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { GLOSSARY, MODULES } from '@/lib/content';
 import { computeStreak, progressPercent, TOTAL_LESSONS, useProgressStore } from '@/lib/store';
@@ -54,46 +55,60 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
-      <ScrollView contentContainerClassName="px-5 pb-10" showsVerticalScrollIndicator={false}>
-        <View className="items-center pt-6">
+      <ScrollView contentContainerClassName="px-5 pb-12" showsVerticalScrollIndicator={false}>
+        <View className="items-center pt-8">
           <View className="h-20 w-20 items-center justify-center rounded-full bg-primary">
             <Text size="3xl" weight="bold" className="text-primary-foreground">
               {(displayName || 'Y').charAt(0).toUpperCase()}
             </Text>
           </View>
-          <Text size="2xl" weight="bold" className="mt-3">
+          <Text size="2xl" weight="bold" className="mt-4">
             {displayName || 'Your journey'}
           </Text>
-          <Text variant="muted" size="sm">
+          <Text variant="muted" size="sm" className="mt-1">
             Building money confidence, your way
           </Text>
         </View>
 
         {/* Stat grid */}
-        <View className="mt-6 flex-row flex-wrap gap-3">
-          <StatBox icon={<Flame color="hsl(44, 92%, 52%)" size={20} />} value={`${streak}`} label="day streak" />
-          <StatBox icon={<Award color="hsl(162, 72%, 34%)" size={20} />} value={`${points}`} label="confidence pts" />
+        <View className="mt-8 flex-row flex-wrap gap-3">
+          <StatBox
+            icon={<Flame color="hsl(44, 92%, 52%)" size={20} />}
+            tone="accent"
+            value={`${streak}`}
+            label="day streak"
+          />
+          <StatBox
+            icon={<Award color="hsl(162, 72%, 34%)" size={20} />}
+            tone="primary"
+            value={`${points}`}
+            label="confidence pts"
+          />
           <StatBox
             icon={<Target color="hsl(160, 60%, 45%)" size={20} />}
+            tone="primary"
             value={`${completed.length}/${TOTAL_LESSONS}`}
             label="lessons"
           />
           <StatBox
             icon={<BookmarkCheck color="hsl(162, 72%, 34%)" size={20} />}
+            tone="primary"
             value={`${savedTerms.length}/${GLOSSARY.length}`}
             label="terms saved"
           />
         </View>
 
         {/* Milestones */}
-        <Text size="lg" weight="bold" className="mt-7">
+        <Text size="lg" weight="bold" className="mt-8">
           Milestones
         </Text>
-        <View className="mt-3 gap-2.5">
+        <View className="mt-4 gap-3">
           {milestones.map((m, i) => (
             <Animated.View key={m.id} entering={FadeInDown.delay(i * 50).duration(350)}>
-              <Card className={`flex-row items-center gap-3 p-4 ${m.reached ? '' : 'opacity-50'}`}>
-                <Text size="2xl">{m.emoji}</Text>
+              <Card className={`flex-row items-center gap-3.5 p-4 ${m.reached ? '' : 'opacity-50'}`}>
+                <IconChip tone={m.reached ? 'primary' : 'muted'} size="md">
+                  <Text size="lg">{m.emoji}</Text>
+                </IconChip>
                 <Text weight="medium" className="flex-1">
                   {m.label}
                 </Text>
@@ -110,18 +125,20 @@ export default function ProfileScreen() {
         </View>
 
         {/* Module breakdown */}
-        <Text size="lg" weight="bold" className="mt-7">
+        <Text size="lg" weight="bold" className="mt-8">
           Module progress
         </Text>
-        <Card className="mt-3 p-4">
+        <Card className="mt-4 p-5">
           {MODULES.map((mod, i) => {
             const done = mod.lessons.filter((l) => completed.includes(l.id)).length;
             return (
               <View key={mod.id}>
-                {i > 0 && <Separator className="my-3" />}
+                {i > 0 && <Separator className="my-4" />}
                 <View className="flex-row items-center justify-between">
-                  <View className="flex-row items-center gap-2">
-                    <Text>{mod.emoji}</Text>
+                  <View className="flex-row items-center gap-3">
+                    <IconChip tone="muted" size="sm">
+                      <Text>{mod.emoji}</Text>
+                    </IconChip>
                     <Text weight="medium">{mod.title}</Text>
                   </View>
                   <Text variant="muted" size="sm">
@@ -134,24 +151,26 @@ export default function ProfileScreen() {
         </Card>
 
         {/* Settings */}
-        <Text size="lg" weight="bold" className="mt-7">
+        <Text size="lg" weight="bold" className="mt-8">
           Settings
         </Text>
-        <Card className="mt-3 p-4">
+        <Card className="mt-4 p-5">
           <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center gap-2">
-              {isDarkColorScheme ? (
-                <Moon color="hsl(158, 64%, 52%)" size={20} />
-              ) : (
-                <Sun color="hsl(162, 72%, 34%)" size={20} />
-              )}
+            <View className="flex-row items-center gap-3">
+              <IconChip tone={isDarkColorScheme ? 'primary' : 'accent'} size="sm">
+                {isDarkColorScheme ? (
+                  <Moon color="hsl(158, 64%, 52%)" size={18} />
+                ) : (
+                  <Sun color="hsl(162, 72%, 34%)" size={18} />
+                )}
+              </IconChip>
               <Text weight="medium">Dark mode</Text>
             </View>
             <Switch checked={isDarkColorScheme} onCheckedChange={toggleColorScheme} />
           </View>
         </Card>
 
-        <Button variant="outline" className="mt-5" onPress={confirmReset}>
+        <Button variant="outline" className="mt-6" onPress={confirmReset}>
           <View className="flex-row items-center gap-2">
             <RotateCcw color="hsl(162, 72%, 34%)" size={18} />
             <Text weight="semibold">Reset progress</Text>
@@ -164,20 +183,24 @@ export default function ProfileScreen() {
 
 function StatBox({
   icon,
+  tone,
   value,
   label,
 }: {
   icon: React.ReactNode;
+  tone: 'primary' | 'accent';
   value: string;
   label: string;
 }) {
   return (
-    <Card className="min-w-[45%] flex-1 p-4">
-      {icon}
-      <Text size="2xl" weight="bold" className="mt-2">
+    <Card className="min-w-[45%] flex-1 p-5">
+      <IconChip tone={tone} size="sm">
+        {icon}
+      </IconChip>
+      <Text size="2xl" weight="bold" className="mt-3">
         {value}
       </Text>
-      <Text variant="muted" size="xs">
+      <Text variant="muted" size="xs" className="mt-0.5">
         {label}
       </Text>
     </Card>

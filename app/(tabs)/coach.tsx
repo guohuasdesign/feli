@@ -67,7 +67,7 @@ export default function VoiceCoachScreen() {
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
       {/* Header */}
-      <View className="flex-row items-center justify-between px-5 pb-3 pt-3">
+      <View className="flex-row items-center justify-between px-5 pb-3 pt-4">
         <View className="flex-row items-center gap-3">
           <View className="h-11 w-11 items-center justify-center rounded-2xl bg-primary">
             <Mic color="hsl(150, 40%, 98%)" size={22} />
@@ -76,7 +76,7 @@ export default function VoiceCoachScreen() {
             <Text size="xl" weight="bold">
               Voice Coach
             </Text>
-            <Text variant="muted" size="xs">
+            <Text variant="muted" size="xs" className="mt-0.5">
               Talk it through, judgement-free
             </Text>
           </View>
@@ -193,7 +193,7 @@ export default function VoiceCoachScreen() {
                 accessibilityRole="button"
                 accessibilityLabel={topic.prompt}
                 onPress={() => ask(topic)}
-                className="flex-row items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 active:opacity-70">
+                className="min-h-[44px] flex-row items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2.5 active:opacity-70">
                 <Text size="sm">{topic.emoji}</Text>
                 <Text size="sm" weight="medium">
                   {topic.prompt}

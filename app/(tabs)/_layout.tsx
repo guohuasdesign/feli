@@ -13,48 +13,61 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: theme.primary,
-        tabBarInactiveTintColor: theme.text + '99',
+        tabBarInactiveTintColor: theme.text + '8C',
         tabBarStyle: {
           backgroundColor: theme.card,
           borderTopColor: theme.border,
-          height: 88,
-          paddingTop: 8,
+          height: 90,
+          paddingTop: 10,
+          paddingBottom: 8,
         },
-        tabBarLabelStyle: { fontFamily: 'Inter_500Medium', fontSize: 11 },
+        tabBarItemStyle: { paddingTop: 2 },
+        tabBarLabelStyle: { fontFamily: 'Inter_500Medium', fontSize: 11, marginTop: 4 },
+        tabBarIconStyle: { marginBottom: 0 },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Learn',
-          tabBarIcon: ({ color, size }) => <BookOpen color={color} size={size ?? 22} />,
+          tabBarIcon: ({ color, focused }) => (
+            <BookOpen color={color} size={24} strokeWidth={focused ? 2.4 : 2} />
+          ),
         }}
       />
       <Tabs.Screen
         name="invest"
         options={{
           title: 'Invest',
-          tabBarIcon: ({ color, size }) => <TrendingUp color={color} size={size ?? 22} />,
+          tabBarIcon: ({ color, focused }) => (
+            <TrendingUp color={color} size={24} strokeWidth={focused ? 2.4 : 2} />
+          ),
         }}
       />
       <Tabs.Screen
         name="glossary"
         options={{
           title: 'Glossary',
-          tabBarIcon: ({ color, size }) => <Sparkles color={color} size={size ?? 22} />,
+          tabBarIcon: ({ color, focused }) => (
+            <Sparkles color={color} size={24} strokeWidth={focused ? 2.4 : 2} />
+          ),
         }}
       />
       <Tabs.Screen
         name="coach"
         options={{
           title: 'Coach',
-          tabBarIcon: ({ color, size }) => <Mic color={color} size={size ?? 22} />,
+          tabBarIcon: ({ color, focused }) => (
+            <Mic color={color} size={24} strokeWidth={focused ? 2.4 : 2} />
+          ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'You',
-          tabBarIcon: ({ color, size }) => <User color={color} size={size ?? 22} />,
+          tabBarIcon: ({ color, focused }) => (
+            <User color={color} size={24} strokeWidth={focused ? 2.4 : 2} />
+          ),
         }}
       />
     </Tabs>

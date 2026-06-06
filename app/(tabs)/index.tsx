@@ -9,6 +9,7 @@ import { Text } from '@/components/ui/text';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { IconChip } from '@/components/IconChip';
 import { NextStepCard } from '@/components/NextStepCard';
 import { AFFIRMATIONS, MODULES } from '@/lib/content';
 import { computeStreak, progressPercent, useProgressStore } from '@/lib/store';
@@ -42,26 +43,26 @@ export default function LearnScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
-      <ScrollView contentContainerClassName="px-5 pb-10" showsVerticalScrollIndicator={false}>
-        <View className="pt-3 pb-1">
+      <ScrollView contentContainerClassName="px-5 pb-12" showsVerticalScrollIndicator={false}>
+        <View className="pb-1 pt-4">
           <Text variant="muted" size="sm">
             {displayName ? `Welcome back, ${displayName}` : 'Welcome to FELI'}
           </Text>
-          <Text size="3xl" weight="bold" className="mt-1">
+          <Text size="3xl" weight="bold" className="mt-1.5 leading-9">
             Learn money on your terms
           </Text>
         </View>
 
         {/* Affirmation card */}
         <Animated.View entering={FadeInDown.duration(400)}>
-          <Card className="mt-4 bg-primary p-5">
+          <Card className="mt-5 bg-primary p-6">
             <View className="flex-row items-center gap-2">
-              <Sparkles color="hsl(150, 40%, 99%)" size={18} />
+              <Sparkles color="hsl(150, 40%, 99%)" size={16} />
               <Text size="xs" weight="semibold" className="text-primary-foreground opacity-80">
                 TODAY&apos;S REMINDER
               </Text>
             </View>
-            <Text size="lg" weight="semibold" className="mt-2 text-primary-foreground">
+            <Text size="lg" weight="semibold" className="mt-2.5 leading-6 text-primary-foreground">
               {affirmation}
             </Text>
           </Card>
@@ -76,7 +77,7 @@ export default function LearnScreen() {
                 {streak}
               </Text>
             </View>
-            <Text variant="muted" size="xs" className="mt-1">
+            <Text variant="muted" size="xs" className="mt-1.5">
               day streak
             </Text>
           </Card>
@@ -84,7 +85,7 @@ export default function LearnScreen() {
             <Text size="2xl" weight="bold">
               {points}
             </Text>
-            <Text variant="muted" size="xs" className="mt-1">
+            <Text variant="muted" size="xs" className="mt-1.5">
               confidence pts
             </Text>
           </Card>
@@ -92,18 +93,18 @@ export default function LearnScreen() {
             <Text size="2xl" weight="bold">
               {pct}%
             </Text>
-            <Text variant="muted" size="xs" className="mt-1">
+            <Text variant="muted" size="xs" className="mt-1.5">
               course done
             </Text>
           </Card>
         </View>
 
-        <View className="mt-3">
+        <View className="mt-4">
           <Progress value={pct} className="h-2" />
         </View>
 
         {/* Closed-loop next step */}
-        <View className="mt-5">
+        <View className="mt-6">
           <NextStepCard
             loop={{ completedLessons: completed, savedPlan, trackedProgress, coachedThisCycle, loopsClosed }}
             hideCtaForStage="learn"
@@ -112,20 +113,22 @@ export default function LearnScreen() {
 
         {/* Modules */}
         {MODULES.map((module, mi) => (
-          <View key={module.id} className="mt-7">
-            <View className="flex-row items-center gap-2">
-              <Text size="xl">{module.emoji}</Text>
+          <View key={module.id} className="mt-8">
+            <View className="flex-row items-center gap-3">
+              <IconChip tone="muted" size="sm">
+                <Text size="lg">{module.emoji}</Text>
+              </IconChip>
               <View className="flex-1">
                 <Text size="lg" weight="bold">
                   {module.title}
                 </Text>
-                <Text variant="muted" size="xs">
+                <Text variant="muted" size="xs" className="mt-0.5">
                   {module.subtitle}
                 </Text>
               </View>
             </View>
 
-            <View className="mt-3 gap-3">
+            <View className="mt-4 gap-3">
               {module.lessons.map((lesson, li) => {
                 const done = completed.includes(lesson.id);
                 return (
@@ -138,20 +141,20 @@ export default function LearnScreen() {
                       onPress={() => router.push(`/lesson/${lesson.id}`)}>
                       <Card
                         className={cn(
-                          'flex-row items-center gap-3 p-4',
+                          'flex-row items-center gap-3.5 p-4',
                           done && 'border-primary/40',
                         )}>
-                        <View className="h-12 w-12 items-center justify-center rounded-2xl bg-secondary">
+                        <IconChip tone={done ? 'primary' : 'muted'} size="md">
                           <Text size="xl">{lesson.emoji}</Text>
-                        </View>
+                        </IconChip>
                         <View className="flex-1">
                           <Text weight="semibold" numberOfLines={1}>
                             {lesson.title}
                           </Text>
-                          <Text variant="muted" size="xs" numberOfLines={2} className="mt-0.5">
+                          <Text variant="muted" size="xs" numberOfLines={2} className="mt-1 leading-4">
                             {lesson.blurb}
                           </Text>
-                          <View className="mt-2 flex-row items-center gap-2">
+                          <View className="mt-2.5 flex-row items-center gap-2">
                             <Badge variant="secondary" textClassName="text-xs">
                               <Text>{`${lesson.minutes} min`}</Text>
                             </Badge>

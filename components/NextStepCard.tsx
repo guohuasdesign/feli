@@ -24,7 +24,7 @@ export function NextStepCard({ loop, hideCtaForStage, className }: NextStepCardP
 
   return (
     <Animated.View entering={FadeInDown.duration(300)}>
-      <Card className={cn('gap-4 border-primary/30 bg-card', className)}>
+      <Card className={cn('gap-5 border-primary/30 bg-card p-5', className)}>
         {/* Loop stage dots */}
         <View className="flex-row items-center justify-between">
           {LOOP_STAGES.map((stage, i) => {
@@ -35,7 +35,7 @@ export function NextStepCard({ loop, hideCtaForStage, className }: NextStepCardP
                 <View className="items-center gap-1">
                   <View
                     className={cn(
-                      'h-9 w-9 items-center justify-center rounded-full',
+                      'h-10 w-10 items-center justify-center rounded-full',
                       active && 'bg-primary',
                       done && 'bg-primary/40',
                       !active && !done && 'bg-secondary',

@@ -40,15 +40,15 @@ export default function GlossaryScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
-      <View className="px-5 pt-3">
-        <Text size="3xl" weight="bold">
+      <View className="px-5 pt-4">
+        <Text size="3xl" weight="bold" className="leading-9">
           Plain-language glossary
         </Text>
-        <Text variant="muted" size="sm" className="mt-1">
+        <Text variant="muted" size="sm" className="mt-1.5 leading-5">
           No jargon, no gatekeeping. Tap a word to learn more.
         </Text>
 
-        <View className="mt-4">
+        <View className="mt-5">
           <Input
             value={query}
             onChangeText={setQuery}
@@ -60,7 +60,7 @@ export default function GlossaryScreen() {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerClassName="gap-2 py-3">
+          contentContainerClassName="gap-2 py-4">
           {CATEGORIES.map((c) => (
             <Pressable
               key={c}
@@ -80,7 +80,7 @@ export default function GlossaryScreen() {
         </ScrollView>
       </View>
 
-      <ScrollView contentContainerClassName="px-5 pb-10" showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerClassName="px-5 pb-12" showsVerticalScrollIndicator={false}>
         <View className="gap-3">
           {filtered.map((t, i) => {
             const isOpen = open === t.term;
@@ -90,17 +90,17 @@ export default function GlossaryScreen() {
                 key={t.term}
                 layout={LinearTransition.springify()}
                 entering={FadeInDown.delay(i * 40).duration(350)}>
-                <Card className="p-4">
+                <Card className="p-5">
                   <Pressable
                     accessibilityRole="button"
                     accessibilityLabel={`${t.term} definition`}
                     onPress={() => setOpen(isOpen ? null : t.term)}>
                     <View className="flex-row items-center justify-between">
-                      <View className="flex-1 pr-2">
+                      <View className="flex-1 pr-3">
                         <Text size="lg" weight="semibold">
                           {t.term}
                         </Text>
-                        <Text variant="muted" size="sm" className="mt-0.5">
+                        <Text variant="muted" size="sm" className="mt-1 leading-5">
                           {t.short}
                         </Text>
                       </View>
@@ -112,15 +112,15 @@ export default function GlossaryScreen() {
                   </Pressable>
 
                   {isOpen && (
-                    <Animated.View entering={FadeInDown.duration(250)} className="mt-3">
-                      <Text size="sm" className="leading-5">
+                    <Animated.View entering={FadeInDown.duration(250)} className="mt-4">
+                      <Text size="sm" className="leading-6">
                         {t.full}
                       </Text>
                       <Pressable
                         accessibilityRole="button"
                         accessibilityLabel={isSaved ? 'Remove bookmark' : 'Save term'}
                         onPress={() => toggleSaved(t.term)}
-                        className="mt-3 flex-row items-center gap-1.5 self-start rounded-full bg-secondary px-3 py-1.5">
+                        className="mt-4 min-h-[44px] flex-row items-center gap-2 self-start rounded-full bg-secondary px-4 py-2.5">
                         <Bookmark
                           color="hsl(162, 72%, 34%)"
                           size={16}

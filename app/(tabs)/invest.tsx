@@ -10,6 +10,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
+import { IconChip } from '@/components/IconChip';
 import { NextStepCard } from '@/components/NextStepCard';
 import { FUNDS, useProgressStore } from '@/lib/store';
 import {
@@ -60,18 +61,18 @@ export default function InvestScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background" edges={['top']}>
-      <ScrollView contentContainerClassName="px-5 pb-10" showsVerticalScrollIndicator={false}>
-        <View className="pt-3 pb-1">
-          <Text size="3xl" weight="bold">
+      <ScrollView contentContainerClassName="px-5 pb-12" showsVerticalScrollIndicator={false}>
+        <View className="pb-1 pt-4">
+          <Text size="3xl" weight="bold" className="leading-9">
             Invest with intention
           </Text>
-          <Text variant="muted" size="sm" className="mt-1">
+          <Text variant="muted" size="sm" className="mt-1.5 leading-5">
             See what steady, values-led investing can grow into.
           </Text>
         </View>
 
         {/* Closed-loop next step */}
-        <View className="mt-4">
+        <View className="mt-5">
           <NextStepCard
             loop={{ completedLessons: completed, savedPlan, trackedProgress, coachedThisCycle, loopsClosed }}
             hideCtaForStage="invest"
@@ -80,19 +81,19 @@ export default function InvestScreen() {
 
         {/* Projection card */}
         <Animated.View entering={FadeInDown.duration(400)}>
-          <Card className="mt-4 bg-primary p-5">
+          <Card className="mt-4 bg-primary p-6">
             <Text size="xs" weight="semibold" className="text-primary-foreground opacity-80">
               PROJECTED IN {years} YEARS
             </Text>
-            <Text size="3xl" weight="bold" className="mt-1 text-primary-foreground">
+            <Text size="3xl" weight="bold" className="mt-1.5 text-primary-foreground">
               {formatEur(future)}
             </Text>
-            <View className="mt-3 flex-row gap-4">
+            <View className="mt-4 flex-row gap-6">
               <View>
                 <Text size="xs" className="text-primary-foreground opacity-70">
                   You put in
                 </Text>
-                <Text weight="semibold" className="text-primary-foreground">
+                <Text weight="semibold" className="mt-0.5 text-primary-foreground">
                   {formatEur(paid)}
                 </Text>
               </View>
@@ -100,12 +101,12 @@ export default function InvestScreen() {
                 <Text size="xs" className="text-primary-foreground opacity-70">
                   Growth
                 </Text>
-                <Text weight="semibold" className="text-primary-foreground">
+                <Text weight="semibold" className="mt-0.5 text-primary-foreground">
                   +{formatEur(growth)}
                 </Text>
               </View>
             </View>
-            <Text size="xs" className="mt-3 text-primary-foreground opacity-60">
+            <Text size="xs" className="mt-4 leading-4 text-primary-foreground opacity-60">
               {coachingFee > 0
                 ? `Investing ${formatEur(invested)}/mo at ${annual.toFixed(1)}% after your ${formatEur(coachingFee)} coaching fee. Not financial advice.`
                 : `Estimate at ${annual.toFixed(1)}% blended return. Not financial advice.`}
@@ -114,9 +115,9 @@ export default function InvestScreen() {
         </Animated.View>
 
         {/* Monthly amount stepper */}
-        <Card className="mt-4 p-4">
+        <Card className="mt-4 p-5">
           <Text weight="semibold">Monthly contribution</Text>
-          <View className="mt-3 flex-row items-center justify-between">
+          <View className="mt-4 flex-row items-center justify-between">
             <Button
               variant="outline"
               size="icon"
@@ -135,13 +136,13 @@ export default function InvestScreen() {
               <Plus color="hsl(162, 72%, 34%)" size={20} />
             </Button>
           </View>
-          <View className="mt-4 flex-row gap-2">
+          <View className="mt-5 flex-row gap-2">
             {[10, 20, 30].map((y) => (
               <Pressable
                 key={y}
                 accessibilityRole="button"
                 onPress={() => setYears(y)}
-                className={`flex-1 items-center rounded-xl border py-2 ${
+                className={`flex-1 items-center rounded-xl border py-2.5 ${
                   years === y ? 'border-primary bg-secondary' : 'border-border'
                 }`}>
                 <Text weight={years === y ? 'semibold' : 'regular'}>{y} yrs</Text>
@@ -151,19 +152,19 @@ export default function InvestScreen() {
         </Card>
 
         {/* Personal coaching fee */}
-        <Card className="mt-4 p-4">
-          <View className="flex-row items-center gap-2">
-            <View className="h-9 w-9 items-center justify-center rounded-xl bg-secondary">
+        <Card className="mt-4 p-5">
+          <View className="flex-row items-center gap-3">
+            <IconChip tone="primary" size="sm">
               <GraduationCap color="hsl(162, 72%, 34%)" size={18} />
-            </View>
+            </IconChip>
             <View className="flex-1">
               <Text weight="semibold">Your coaching fee</Text>
-              <Text variant="muted" size="xs" className="mt-0.5 leading-4">
+              <Text variant="muted" size="xs" className="mt-1 leading-4">
                 Set aside a monthly amount as your own coaching budget — your investment in learning.
               </Text>
             </View>
           </View>
-          <View className="mt-4 flex-row items-center justify-between">
+          <View className="mt-5 flex-row items-center justify-between">
             <Button
               variant="outline"
               size="icon"
@@ -188,7 +189,7 @@ export default function InvestScreen() {
             </Button>
           </View>
           {coachingFee > 0 && (
-            <View className="mt-3 rounded-xl bg-secondary p-3">
+            <View className="mt-4 rounded-xl bg-secondary p-3.5">
               <Text size="xs" className="text-secondary-foreground leading-4">
                 Over {years} years that&apos;s {formatEur(coachingBudget)} invested in your own
                 growth — and {formatEur(invested)}/mo still goes into your portfolio.
@@ -196,14 +197,14 @@ export default function InvestScreen() {
             </View>
           )}
           {coachingFee >= monthly && monthly > 0 && (
-            <Text variant="destructive" size="xs" className="mt-2">
+            <Text variant="destructive" size="xs" className="mt-2.5">
               Your coaching fee is your whole contribution — lower it to keep investing too.
             </Text>
           )}
         </Card>
 
         {/* Portfolio summary */}
-        <View className="mt-6 flex-row items-center justify-between">
+        <View className="mt-8 flex-row items-center justify-between">
           <Text size="lg" weight="bold">
             Your portfolio
           </Text>
@@ -215,12 +216,12 @@ export default function InvestScreen() {
           </View>
         </View>
         {totalPct !== 100 && (
-          <Text variant="destructive" size="xs" className="mt-1">
+          <Text variant="destructive" size="xs" className="mt-1.5">
             Allocation totals {totalPct}% — adjust funds to reach 100%.
           </Text>
         )}
 
-        <View className="mt-3 gap-3">
+        <View className="mt-4 gap-3">
           {allocation.map((a, i) => {
             const fund = FUNDS.find((f) => f.id === a.fundId);
             if (!fund) return null;
@@ -236,7 +237,7 @@ export default function InvestScreen() {
                         <Text weight="semibold" numberOfLines={1}>
                           {fund.name}
                         </Text>
-                        <View className="mt-1 flex-row items-center gap-2">
+                        <View className="mt-1.5 flex-row items-center gap-2">
                           <Badge variant="secondary" textClassName="text-xs">
                             {fund.category}
                           </Badge>
@@ -248,7 +249,7 @@ export default function InvestScreen() {
                           </View>
                         </View>
                       </View>
-                      <View className="items-end">
+                      <View className="flex-row items-center gap-1">
                         <Text size="lg" weight="bold">
                           {a.percent}%
                         </Text>
@@ -264,24 +265,24 @@ export default function InvestScreen() {
         </View>
 
         {/* Explore more funds */}
-        <Text size="lg" weight="bold" className="mt-7">
+        <Text size="lg" weight="bold" className="mt-8">
           Explore funds
         </Text>
-        <View className="mt-3 gap-3">
+        <View className="mt-4 gap-3">
           {FUNDS.filter((f) => !allocation.some((a) => a.fundId === f.id)).map((fund) => (
             <Pressable
               key={fund.id}
               accessibilityRole="button"
               onPress={() => router.push(`/fund/${fund.id}`)}>
-              <Card className="flex-row items-center gap-3 p-4">
-                <View className="h-10 w-10 items-center justify-center rounded-xl bg-secondary">
+              <Card className="flex-row items-center gap-3.5 p-4">
+                <IconChip tone="primary" size="md">
                   <TrendingUp color="hsl(162, 72%, 34%)" size={20} />
-                </View>
+                </IconChip>
                 <View className="flex-1">
                   <Text weight="semibold" numberOfLines={1}>
                     {fund.name}
                   </Text>
-                  <Text variant="muted" size="xs">
+                  <Text variant="muted" size="xs" className="mt-0.5">
                     {fund.return5y}% / yr · {fund.category}
                   </Text>
                 </View>
@@ -290,8 +291,10 @@ export default function InvestScreen() {
             </Pressable>
           ))}
           {FUNDS.every((f) => allocation.some((a) => a.fundId === f.id)) && (
-            <Card className="flex-row items-center gap-3 p-4">
-              <ShieldCheck color="hsl(160, 60%, 45%)" size={20} />
+            <Card className="flex-row items-center gap-3.5 p-4">
+              <IconChip tone="muted" size="md">
+                <ShieldCheck color="hsl(160, 60%, 45%)" size={20} />
+              </IconChip>
               <Text variant="muted" size="sm" className="flex-1">
                 You&apos;re holding every fund we offer. Nicely diversified.
               </Text>
@@ -300,7 +303,7 @@ export default function InvestScreen() {
         </View>
 
         <Button
-          className="mt-6"
+          className="mt-8"
           onPress={() => {
             markPlanSaved();
             toast({
