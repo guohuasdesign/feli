@@ -24,6 +24,8 @@ type ProgressState = {
   displayName: string;
   /** Planned monthly investment in EUR. */
   monthlyAmount: number;
+  /** User-set personal coaching fee in EUR per month. */
+  coachingFee: number;
   /** Portfolio allocation across funds (must sum to 100 when set). */
   allocation: Allocation[];
 
@@ -31,6 +33,7 @@ type ProgressState = {
   toggleSavedTerm: (term: string) => void;
   setOnboarded: (name: string) => void;
   setMonthlyAmount: (amount: number) => void;
+  setCoachingFee: (fee: number) => void;
   setAllocation: (allocation: Allocation[]) => void;
   reset: () => void;
 };
@@ -51,6 +54,7 @@ export const useProgressStore = create<ProgressState>()(
       onboarded: false,
       displayName: '',
       monthlyAmount: 100,
+      coachingFee: 5,
       allocation: [
         { fundId: 'world-esg', percent: 50 },
         { fundId: 'gender-equality', percent: 30 },
@@ -79,6 +83,7 @@ export const useProgressStore = create<ProgressState>()(
 
       setOnboarded: (name) => set({ onboarded: true, displayName: name.trim() }),
       setMonthlyAmount: (amount) => set({ monthlyAmount: Math.max(0, Math.round(amount)) }),
+      setCoachingFee: (fee) => set({ coachingFee: Math.max(0, Math.round(fee)) }),
       setAllocation: (allocation) => set({ allocation }),
 
       reset: () =>
@@ -90,6 +95,7 @@ export const useProgressStore = create<ProgressState>()(
           onboarded: false,
           displayName: '',
           monthlyAmount: 100,
+          coachingFee: 5,
           allocation: [
             { fundId: 'world-esg', percent: 50 },
             { fundId: 'gender-equality', percent: 30 },
@@ -98,7 +104,7 @@ export const useProgressStore = create<ProgressState>()(
         }),
     }),
     {
-      name: 'flinta-progress-v1',
+      name: 'feli-progress-v1',
       storage: createJSONStorage(() => AsyncStorage),
     },
   ),

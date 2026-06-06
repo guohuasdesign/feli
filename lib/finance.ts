@@ -38,6 +38,22 @@ export function contributed(monthly: number, years: number): number {
   return monthly * years * 12;
 }
 
+/**
+ * Total personal coaching budget set aside over the period. The coaching fee is
+ * a monthly EUR amount the user dedicates to their own financial coaching/learning.
+ */
+export function coachingTotal(fee: number, years: number): number {
+  return Math.max(0, fee) * years * 12;
+}
+
+/**
+ * Effective amount that actually compounds each month once the personal coaching
+ * fee is set aside from the monthly contribution.
+ */
+export function investedAfterFee(monthly: number, fee: number): number {
+  return Math.max(0, monthly - Math.max(0, fee));
+}
+
 export function formatEur(value: number): string {
   return new Intl.NumberFormat('en-IE', {
     style: 'currency',

@@ -3,7 +3,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { ChevronRight, Leaf, Minus, Plus, ShieldCheck, TrendingUp } from 'lucide-react-native';
+import { ChevronRight, GraduationCap, Leaf, Minus, Plus, ShieldCheck, TrendingUp } from 'lucide-react-native';
 
 import { Text } from '@/components/ui/text';
 import { Card } from '@/components/ui/card';
@@ -11,7 +11,15 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { FUNDS, useProgressStore } from '@/lib/store';
-import { blendedEsg, blendedReturn, contributed, formatEur, projectFutureValue } from '@/lib/finance';
+import {
+  blendedEsg,
+  blendedReturn,
+  coachingTotal,
+  contributed,
+  formatEur,
+  investedAfterFee,
+  projectFutureValue,
+} from '@/lib/finance';
 import { useToast } from '@/components/ui/toast';
 
 const RISK_COLOR: Record<string, string> = {
@@ -23,6 +31,8 @@ const RISK_COLOR: Record<string, string> = {
 export default function InvestScreen() {
   const monthly = useProgressStore((s) => s.monthlyAmount);
   const setMonthly = useProgressStore((s) => s.setMonthlyAmount);
+  const coachingFee = useProgressStore((s) => s.coachingFee);
+  const setCoachingFee = useProgressStore((s) => s.setCoachingFee);
   const allocation = useProgressStore((s) => s.allocation);
   const { toast } = useToast();
 
@@ -30,12 +40,14 @@ export default function InvestScreen() {
 
   const annual = useMemo(() => blendedReturn(allocation), [allocation]);
   const esg = useMemo(() => blendedEsg(allocation), [allocation]);
+  const invested = investedAfterFee(monthly, coachingFee);
   const future = useMemo(
-    () => projectFutureValue(monthly, annual, years),
-    [monthly, annual, years],
+    () => projectFutureValue(invested, annual, years),
+    [invested, annual, years],
   );
-  const paid = contributed(monthly, years);
+  const paid = contributed(invested, years);
   const growth = Math.max(0, future - paid);
+  const coachingBudget = coachingTotal(coachingFee, years);
 
   const totalPct = allocation.reduce((s, a) => s + a.percent, 0);
 
@@ -79,7 +91,9 @@ export default function InvestScreen() {
               </View>
             </View>
             <Text size="xs" className="mt-3 text-primary-foreground opacity-60">
-              Estimate at {annual.toFixed(1)}% blended return. Not financial advice.
+              {coachingFee > 0
+                ? `Investing ${formatEur(invested)}/mo at ${annual.toFixed(1)}% after your ${formatEur(coachingFee)} coaching fee. Not financial advice.`
+                : `Estimate at ${annual.toFixed(1)}% blended return. Not financial advice.`}
             </Text>
           </Card>
         </Animated.View>
@@ -119,6 +133,58 @@ export default function InvestScreen() {
               </Pressable>
             ))}
           </View>
+        </Card>
+
+        {/* Personal coaching fee */}
+        <Card className="mt-4 p-4">
+          <View className="flex-row items-center gap-2">
+            <View className="h-9 w-9 items-center justify-center rounded-xl bg-secondary">
+              <GraduationCap color="hsl(280, 55%, 38%)" size={18} />
+            </View>
+            <View className="flex-1">
+              <Text weight="semibold">Your coaching fee</Text>
+              <Text variant="muted" size="xs" className="mt-0.5 leading-4">
+                Set aside a monthly amount as your own coaching budget — your investment in learning.
+              </Text>
+            </View>
+          </View>
+          <View className="mt-4 flex-row items-center justify-between">
+            <Button
+              variant="outline"
+              size="icon"
+              accessibilityLabel="Decrease coaching fee"
+              onPress={() => setCoachingFee(coachingFee - 5)}>
+              <Minus color="hsl(280, 55%, 38%)" size={20} />
+            </Button>
+            <View className="items-center">
+              <Text size="3xl" weight="bold">
+                {formatEur(coachingFee)}
+              </Text>
+              <Text variant="muted" size="xs">
+                per month
+              </Text>
+            </View>
+            <Button
+              variant="outline"
+              size="icon"
+              accessibilityLabel="Increase coaching fee"
+              onPress={() => setCoachingFee(coachingFee + 5)}>
+              <Plus color="hsl(280, 55%, 38%)" size={20} />
+            </Button>
+          </View>
+          {coachingFee > 0 && (
+            <View className="mt-3 rounded-xl bg-secondary p-3">
+              <Text size="xs" className="text-secondary-foreground leading-4">
+                Over {years} years that&apos;s {formatEur(coachingBudget)} invested in your own
+                growth — and {formatEur(invested)}/mo still goes into your portfolio.
+              </Text>
+            </View>
+          )}
+          {coachingFee >= monthly && monthly > 0 && (
+            <Text variant="destructive" size="xs" className="mt-2">
+              Your coaching fee is your whole contribution — lower it to keep investing too.
+            </Text>
+          )}
         </Card>
 
         {/* Portfolio summary */}
@@ -224,7 +290,10 @@ export default function InvestScreen() {
             toast({
               variant: 'success',
               title: 'Plan saved',
-              description: `${formatEur(monthly)}/mo — you've got this.`,
+              description:
+                coachingFee > 0
+                  ? `${formatEur(invested)}/mo invested + ${formatEur(coachingFee)} coaching — you've got this.`
+                  : `${formatEur(monthly)}/mo — you've got this.`,
             })
           }>
           <Text>Save my plan</Text>

@@ -1,4 +1,4 @@
-// Static learning content for the FLINTA finance app.
+// Static learning content for FELI — Female Empowerment Longterm Investment.
 // Written in plain, encouraging language — no gatekeeping jargon.
 
 export type DialogueStep = {
@@ -215,6 +215,45 @@ export const MODULES: Module[] = [
           {
             speaker: 'guide',
             text: 'When you invest with your values, your money becomes a vote. That\'s real power — your portfolio shaping the world, while building your future.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'coaching',
+    title: 'Coach Yourself',
+    subtitle: 'Invest in your own growth, on purpose.',
+    emoji: '🎓',
+    lessons: [
+      {
+        id: 'coaching-fee',
+        title: 'Your personal coaching fee',
+        emoji: '💪',
+        blurb: 'Why paying yourself to learn is the smartest fee you\'ll ever set.',
+        minutes: 4,
+        points: 60,
+        takeaway:
+          'A coaching fee is money you deliberately set aside each month for your own financial learning. You choose the figure — even a small one compounds into real confidence.',
+        dialogue: [
+          {
+            speaker: 'guide',
+            text: 'In FELI you can set a personal coaching fee — a monthly amount you dedicate to your own financial growth. You decide the number. There\'s no minimum and no judgement.',
+          },
+          {
+            speaker: 'you',
+            choices: [
+              { label: 'Why pay myself?', reply: 'Why would I set money aside instead of investing all of it?' },
+              { label: 'How much is right?', reply: 'How do I know what coaching fee to choose?' },
+            ],
+          },
+          {
+            speaker: 'guide',
+            text: 'Because confidence is an asset too. A small, intentional coaching budget — for a book, a course, or just a buffer to learn calmly — pays back in better decisions for decades. The right figure is one that feels sustainable to you, even if it\'s €5.',
+          },
+          {
+            speaker: 'guide',
+            text: 'Head to the Invest tab and set your own coaching fee. You\'ll see exactly how much goes to your growth and how much keeps compounding in your portfolio — both are wins.',
           },
         ],
       },

@@ -40,7 +40,7 @@ export default function LearnScreen() {
       <ScrollView contentContainerClassName="px-5 pb-10" showsVerticalScrollIndicator={false}>
         <View className="pt-3 pb-1">
           <Text variant="muted" size="sm">
-            {displayName ? `Welcome back, ${displayName}` : 'Welcome'}
+            {displayName ? `Welcome back, ${displayName}` : 'Welcome to FELI'}
           </Text>
           <Text size="3xl" weight="bold" className="mt-1">
             Learn money on your terms

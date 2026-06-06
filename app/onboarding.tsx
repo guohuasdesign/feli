@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { useProgressStore } from '@/lib/store';
 
 const VALUES = [
-  { icon: <ShieldCheck color="hsl(280, 55%, 38%)" size={22} />, title: 'A safe space to learn', body: 'No jargon, no judgement — just clear, friendly guidance built for FLINTA investors.' },
+  { icon: <ShieldCheck color="hsl(280, 55%, 38%)" size={22} />, title: 'A safe space to learn', body: 'No jargon, no judgement — just clear, friendly guidance built for women investing for the long term.' },
   { icon: <Leaf color="hsl(160, 60%, 45%)" size={22} />, title: 'Invest in your values', body: 'Explore sustainable funds backing climate action and gender equality.' },
   { icon: <Heart color="hsl(12, 88%, 62%)" size={22} />, title: 'Confidence, your pace', body: 'Bite-sized conversations turn money anxiety into quiet, lasting power.' },
 ];
@@ -33,11 +33,11 @@ export default function Onboarding() {
             <Sparkles color="hsl(300, 30%, 99%)" size={28} />
           </View>
           <Text size="3xl" weight="bold" className="mt-4">
-            Money, on your terms
+            Welcome to FELI
           </Text>
           <Text variant="muted" size="base" className="mt-2 leading-6">
-            Learn to invest sustainably and build real financial confidence — in language that
-            actually makes sense.
+            Female Empowerment Longterm Investment. Learn through dialogue, invest sustainably, and
+            build real financial confidence — in language that actually makes sense.
           </Text>
         </Animated.View>
 
