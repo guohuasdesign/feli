@@ -10,6 +10,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 
   return {
     ...config,
+    owner: 'huaguo',
     name: 'FELI',
     slug: 'feli',
     newArchEnabled: true,
@@ -32,11 +33,15 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       package: process.env.BILT_ANDROID_PACKAGE ?? 'me.bilt.feli',
     },
     extra: {
+      ...config.extra,
       appStoreAppId: process.env.BILT_APP_STORE_APP_ID,
       // Read at config-eval time (Node) from the sandbox shell env, then exposed
       // to the app at runtime via expo-constants. Avoids stale build-time inlining.
       elevenLabsApiKey:
         process.env.EXPO_PUBLIC_ELEVENLABS_API_KEY ?? process.env.ELEVENLABS_API_KEY,
+      eas: {
+        projectId: '0587e6a8-cc4b-48c1-ab94-cf65928d0960',
+      },
     },
     plugins: ['expo-router', 'expo-font', 'expo-audio', ...nativePlugins],
     experiments: {

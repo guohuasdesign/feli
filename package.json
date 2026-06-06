@@ -5,6 +5,7 @@
   "scripts": {
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "build": "expo export --platform web",
     "expo-check": "expo install --check",
     "lint": "oxlint --type-aware --type-check",
     "format": "oxfmt --write .",
