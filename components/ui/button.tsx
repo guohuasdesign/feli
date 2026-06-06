@@ -124,7 +124,7 @@ export const Button = React.forwardRef<React.ComponentRef<typeof AnimatedPressab
           {...props}
         >
           <LinearGradient
-            colors={['hsl(240, 5.9%, 12%)', 'hsl(240, 5.9%, 10%)']}
+            colors={['hsl(280, 60%, 44%)', 'hsl(285, 62%, 36%)']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{

@@ -9,20 +9,20 @@ const NAV_FONTS = {
 
 export const NAV_THEME = {
   light: {
-    background: 'hsl(0 0% 100%)', // background
-    border: 'hsl(240 5.9% 90%)', // border
+    background: 'hsl(300 30% 99%)', // background
+    border: 'hsl(290 25% 89%)', // border
     card: 'hsl(0 0% 100%)', // card
-    notification: 'hsl(0 84.2% 60.2%)', // destructive
-    primary: 'hsl(240 5.9% 10%)', // primary
-    text: 'hsl(240 10% 3.9%)', // foreground
+    notification: 'hsl(12 88% 62%)', // accent
+    primary: 'hsl(280 55% 38%)', // primary
+    text: 'hsl(280 30% 12%)', // foreground
   },
   dark: {
-    background: 'hsl(240 10% 3.9%)', // background
-    border: 'hsl(240 3.7% 15.9%)', // border
-    card: 'hsl(240 10% 3.9%)', // card
-    notification: 'hsl(0 72% 51%)', // destructive
-    primary: 'hsl(0 0% 98%)', // primary
-    text: 'hsl(0 0% 98%)', // foreground
+    background: 'hsl(282 30% 7%)', // background
+    border: 'hsl(282 20% 20%)', // border
+    card: 'hsl(282 28% 11%)', // card
+    notification: 'hsl(12 85% 65%)', // accent
+    primary: 'hsl(285 70% 72%)', // primary
+    text: 'hsl(300 25% 96%)', // foreground
   },
 };
 
