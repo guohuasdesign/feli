@@ -51,7 +51,7 @@ export default function LearnScreen() {
         <Animated.View entering={FadeInDown.duration(400)}>
           <Card className="mt-4 bg-primary p-5">
             <View className="flex-row items-center gap-2">
-              <Sparkles color="hsl(300, 30%, 99%)" size={18} />
+              <Sparkles color="hsl(150, 40%, 99%)" size={18} />
               <Text size="xs" weight="semibold" className="text-primary-foreground opacity-80">
                 TODAY&apos;S REMINDER
               </Text>
@@ -66,7 +66,7 @@ export default function LearnScreen() {
         <View className="mt-4 flex-row gap-3">
           <Card className="flex-1 p-4">
             <View className="flex-row items-center gap-1.5">
-              <Flame color="hsl(12, 88%, 62%)" size={18} />
+              <Flame color="hsl(44, 92%, 52%)" size={18} />
               <Text size="2xl" weight="bold">
                 {streak}
               </Text>
@@ -148,9 +148,9 @@ export default function LearnScreen() {
                           </View>
                         </View>
                         {done ? (
-                          <CheckCircle2 color="hsl(280, 55%, 38%)" size={24} />
+                          <CheckCircle2 color="hsl(162, 72%, 34%)" size={24} />
                         ) : (
-                          <Circle color="hsl(280, 12%, 65%)" size={24} />
+                          <Circle color="hsl(165, 12%, 65%)" size={24} />
                         )}
                       </Card>
                     </Pressable>

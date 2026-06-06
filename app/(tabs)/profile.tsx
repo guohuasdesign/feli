@@ -65,15 +65,15 @@ export default function ProfileScreen() {
 
         {/* Stat grid */}
         <View className="mt-6 flex-row flex-wrap gap-3">
-          <StatBox icon={<Flame color="hsl(12, 88%, 62%)" size={20} />} value={`${streak}`} label="day streak" />
-          <StatBox icon={<Award color="hsl(280, 55%, 38%)" size={20} />} value={`${points}`} label="confidence pts" />
+          <StatBox icon={<Flame color="hsl(44, 92%, 52%)" size={20} />} value={`${streak}`} label="day streak" />
+          <StatBox icon={<Award color="hsl(162, 72%, 34%)" size={20} />} value={`${points}`} label="confidence pts" />
           <StatBox
             icon={<Target color="hsl(160, 60%, 45%)" size={20} />}
             value={`${completed.length}/${TOTAL_LESSONS}`}
             label="lessons"
           />
           <StatBox
-            icon={<BookmarkCheck color="hsl(280, 55%, 38%)" size={20} />}
+            icon={<BookmarkCheck color="hsl(162, 72%, 34%)" size={20} />}
             value={`${savedTerms.length}/${GLOSSARY.length}`}
             label="terms saved"
           />
@@ -135,9 +135,9 @@ export default function ProfileScreen() {
           <View className="flex-row items-center justify-between">
             <View className="flex-row items-center gap-2">
               {isDarkColorScheme ? (
-                <Moon color="hsl(285, 70%, 72%)" size={20} />
+                <Moon color="hsl(158, 64%, 52%)" size={20} />
               ) : (
-                <Sun color="hsl(280, 55%, 38%)" size={20} />
+                <Sun color="hsl(162, 72%, 34%)" size={20} />
               )}
               <Text weight="medium">Dark mode</Text>
             </View>
@@ -147,7 +147,7 @@ export default function ProfileScreen() {
 
         <Button variant="outline" className="mt-5" onPress={confirmReset}>
           <View className="flex-row items-center gap-2">
-            <RotateCcw color="hsl(280, 55%, 38%)" size={18} />
+            <RotateCcw color="hsl(162, 72%, 34%)" size={18} />
             <Text weight="semibold">Reset progress</Text>
           </View>
         </Button>

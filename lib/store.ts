@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { FUNDS, MODULES } from './content';
+import { DEFAULT_VOICE_ID } from './elevenlabs';
 
 export type Allocation = {
   fundId: string;
@@ -28,6 +29,10 @@ type ProgressState = {
   coachingFee: number;
   /** Portfolio allocation across funds (must sum to 100 when set). */
   allocation: Allocation[];
+  /** Selected ElevenLabs voice id for the coach. */
+  voiceId: string;
+  /** Auto-play the coach's voice as new lines appear. */
+  voiceAutoplay: boolean;
 
   completeLesson: (lessonId: string, points: number) => void;
   toggleSavedTerm: (term: string) => void;
@@ -35,6 +40,8 @@ type ProgressState = {
   setMonthlyAmount: (amount: number) => void;
   setCoachingFee: (fee: number) => void;
   setAllocation: (allocation: Allocation[]) => void;
+  setVoiceId: (id: string) => void;
+  setVoiceAutoplay: (on: boolean) => void;
   reset: () => void;
 };
 
@@ -60,6 +67,8 @@ export const useProgressStore = create<ProgressState>()(
         { fundId: 'gender-equality', percent: 30 },
         { fundId: 'climate-bond', percent: 20 },
       ],
+      voiceId: DEFAULT_VOICE_ID,
+      voiceAutoplay: false,
 
       completeLesson: (lessonId, points) => {
         const { completedLessons, points: cur, activeDays } = get();
@@ -85,6 +94,8 @@ export const useProgressStore = create<ProgressState>()(
       setMonthlyAmount: (amount) => set({ monthlyAmount: Math.max(0, Math.round(amount)) }),
       setCoachingFee: (fee) => set({ coachingFee: Math.max(0, Math.round(fee)) }),
       setAllocation: (allocation) => set({ allocation }),
+      setVoiceId: (id) => set({ voiceId: id }),
+      setVoiceAutoplay: (on) => set({ voiceAutoplay: on }),
 
       reset: () =>
         set({
@@ -101,6 +112,8 @@ export const useProgressStore = create<ProgressState>()(
             { fundId: 'gender-equality', percent: 30 },
             { fundId: 'climate-bond', percent: 20 },
           ],
+          voiceId: DEFAULT_VOICE_ID,
+          voiceAutoplay: false,
         }),
     }),
     {

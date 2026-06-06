@@ -5,13 +5,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeInUp, FadeInRight } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { Platform } from 'react-native';
-import { CheckCircle2, Sparkles, X } from 'lucide-react-native';
+import { CheckCircle2, Sparkles, Volume2, X } from 'lucide-react-native';
 
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { PlayButton } from '@/components/PlayButton';
 import { MODULES, type DialogueStep } from '@/lib/content';
 import { useProgressStore } from '@/lib/store';
+import { useVoice } from '@/hooks/useVoice';
+import { hasElevenLabsKey } from '@/lib/elevenlabs';
 
 type Bubble =
   | { kind: 'guide'; text: string }
@@ -21,6 +24,11 @@ export default function LessonScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const completeLesson = useProgressStore((s) => s.completeLesson);
   const alreadyDone = useProgressStore((s) => s.completedLessons.includes(id ?? ''));
+  const voiceId = useProgressStore((s) => s.voiceId);
+  const voiceAutoplay = useProgressStore((s) => s.voiceAutoplay);
+  const setVoiceAutoplay = useProgressStore((s) => s.setVoiceAutoplay);
+  const { play: voicePlay, stop: voiceStop, status: voiceStatus, activeId: voiceActiveId, error: voiceError } = useVoice();
+  const voiceEnabled = hasElevenLabsKey();
 
   const lesson = useMemo(() => {
     for (const m of MODULES) {
@@ -51,6 +59,19 @@ export default function LessonScreen() {
     setBubbles(initial);
     setStepIndex(i);
   }, [lesson]);
+
+  // Autoplay the newest guide line when enabled.
+  const lastSpokenRef = useRef(-1);
+  useEffect(() => {
+    if (!voiceEnabled || !voiceAutoplay) return;
+    if (bubbles.length === 0) return;
+    const lastIndex = bubbles.length - 1;
+    const last = bubbles[lastIndex];
+    if (last.kind === 'guide' && lastIndex !== lastSpokenRef.current) {
+      lastSpokenRef.current = lastIndex;
+      void voicePlay(`bubble-${lastIndex}`, last.text, voiceId);
+    }
+  }, [bubbles, voiceAutoplay, voiceEnabled, voiceId, voicePlay]);
 
   if (!lesson) {
     return (
@@ -101,7 +122,7 @@ export default function LessonScreen() {
         <View className="flex-1 items-center justify-center px-8">
           <Animated.View entering={FadeIn.duration(400)} className="items-center">
             <View className="h-24 w-24 items-center justify-center rounded-full bg-primary">
-              <CheckCircle2 color="hsl(300, 30%, 99%)" size={48} />
+              <CheckCircle2 color="hsl(150, 40%, 99%)" size={48} />
             </View>
             <Text size="2xl" weight="bold" className="mt-5 text-center">
               {lesson.title}
@@ -111,7 +132,7 @@ export default function LessonScreen() {
             </Text>
             <Card className="mt-5 bg-secondary p-5">
               <View className="flex-row items-center gap-2">
-                <Sparkles color="hsl(280, 55%, 38%)" size={18} />
+                <Sparkles color="hsl(162, 72%, 34%)" size={18} />
                 <Text size="xs" weight="semibold" className="text-secondary-foreground opacity-80">
                   TAKEAWAY
                 </Text>
@@ -149,11 +170,41 @@ export default function LessonScreen() {
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Close lesson"
-          onPress={() => router.back()}
+          onPress={() => {
+            voiceStop();
+            router.back();
+          }}
           className="h-11 w-11 items-center justify-center">
-          <X color="hsl(280, 12%, 55%)" size={24} />
+          <X color="hsl(165, 12%, 55%)" size={24} />
         </Pressable>
       </View>
+
+      {voiceEnabled && (
+        <View className="flex-row items-center justify-end px-5 pt-1">
+          <Pressable
+            accessibilityRole="switch"
+            accessibilityState={{ checked: voiceAutoplay }}
+            accessibilityLabel="Auto-play coach voice"
+            onPress={() => {
+              if (voiceAutoplay) voiceStop();
+              setVoiceAutoplay(!voiceAutoplay);
+            }}
+            className={`flex-row items-center gap-1.5 rounded-full border px-3 py-1.5 ${
+              voiceAutoplay ? 'border-primary bg-secondary' : 'border-border'
+            }`}>
+            <Volume2
+              color={voiceAutoplay ? 'hsl(162, 72%, 34%)' : 'hsl(165, 12%, 55%)'}
+              size={14}
+            />
+            <Text
+              size="xs"
+              weight="medium"
+              className={voiceAutoplay ? 'text-primary' : 'text-muted-foreground'}>
+              Auto voice {voiceAutoplay ? 'on' : 'off'}
+            </Text>
+          </Pressable>
+        </View>
+      )}
 
       <ScrollView
         ref={scrollRef}
@@ -162,14 +213,24 @@ export default function LessonScreen() {
         {bubbles.map((b, i) =>
           b.kind === 'guide' ? (
             <Animated.View
-              key={`${b.kind}-${i}`}
+              key={`${b.kind}-${b.text}`}
               entering={FadeInUp.duration(350)}
-              className="max-w-[85%] self-start rounded-2xl rounded-tl-sm bg-secondary px-4 py-3">
-              <Text className="text-secondary-foreground leading-5">{b.text}</Text>
+              className="max-w-[85%] flex-row items-end gap-2 self-start">
+              <View className="flex-1 rounded-2xl rounded-tl-sm bg-secondary px-4 py-3">
+                <Text className="text-secondary-foreground leading-5">{b.text}</Text>
+              </View>
+              {voiceEnabled && (
+                <PlayButton
+                  state={voiceActiveId === `bubble-${i}` ? voiceStatus : 'idle'}
+                  color="hsl(162, 72%, 34%)"
+                  accessibilityLabel="Listen to this message"
+                  onPress={() => voicePlay(`bubble-${i}`, b.text, voiceId)}
+                />
+              )}
             </Animated.View>
           ) : (
             <Animated.View
-              key={`${b.kind}-${i}`}
+              key={`${b.kind}-${b.text}`}
               entering={FadeInRight.duration(300)}
               className="max-w-[85%] self-end rounded-2xl rounded-tr-sm bg-primary px-4 py-3">
               <Text className="text-primary-foreground leading-5">{b.text}</Text>
@@ -177,6 +238,14 @@ export default function LessonScreen() {
           ),
         )}
       </ScrollView>
+
+      {voiceError && (
+        <View className="mx-5 mb-2 rounded-xl bg-destructive/10 px-3 py-2">
+          <Text size="xs" className="text-destructive">
+            {voiceError}
+          </Text>
+        </View>
+      )}
 
       {/* Footer: choices, or finish */}
       <View className="border-t border-border px-5 py-4">

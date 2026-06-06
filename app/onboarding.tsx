@@ -11,9 +11,9 @@ import { Button } from '@/components/ui/button';
 import { useProgressStore } from '@/lib/store';
 
 const VALUES = [
-  { icon: <ShieldCheck color="hsl(280, 55%, 38%)" size={22} />, title: 'A safe space to learn', body: 'No jargon, no judgement — just clear, friendly guidance built for women investing for the long term.' },
+  { icon: <ShieldCheck color="hsl(162, 72%, 34%)" size={22} />, title: 'A safe space to learn', body: 'No jargon, no judgement — just clear, friendly guidance built for women investing for the long term.' },
   { icon: <Leaf color="hsl(160, 60%, 45%)" size={22} />, title: 'Invest in your values', body: 'Explore sustainable funds backing climate action and gender equality.' },
-  { icon: <Heart color="hsl(12, 88%, 62%)" size={22} />, title: 'Confidence, your pace', body: 'Bite-sized conversations turn money anxiety into quiet, lasting power.' },
+  { icon: <Heart color="hsl(44, 92%, 52%)" size={22} />, title: 'Confidence, your pace', body: 'Bite-sized conversations turn money anxiety into quiet, lasting power.' },
 ];
 
 export default function Onboarding() {
@@ -30,7 +30,7 @@ export default function Onboarding() {
       <View className="flex-1 px-6 pt-8">
         <Animated.View entering={FadeIn.duration(400)}>
           <View className="h-14 w-14 items-center justify-center rounded-2xl bg-primary">
-            <Sparkles color="hsl(300, 30%, 99%)" size={28} />
+            <Sparkles color="hsl(150, 40%, 99%)" size={28} />
           </View>
           <Text size="3xl" weight="bold" className="mt-4">
             Welcome to FELI

@@ -107,7 +107,7 @@ export default function InvestScreen() {
               size="icon"
               accessibilityLabel="Decrease amount"
               onPress={() => setMonthly(monthly - 25)}>
-              <Minus color="hsl(280, 55%, 38%)" size={20} />
+              <Minus color="hsl(162, 72%, 34%)" size={20} />
             </Button>
             <Text size="3xl" weight="bold">
               {formatEur(monthly)}
@@ -117,7 +117,7 @@ export default function InvestScreen() {
               size="icon"
               accessibilityLabel="Increase amount"
               onPress={() => setMonthly(monthly + 25)}>
-              <Plus color="hsl(280, 55%, 38%)" size={20} />
+              <Plus color="hsl(162, 72%, 34%)" size={20} />
             </Button>
           </View>
           <View className="mt-4 flex-row gap-2">
@@ -139,7 +139,7 @@ export default function InvestScreen() {
         <Card className="mt-4 p-4">
           <View className="flex-row items-center gap-2">
             <View className="h-9 w-9 items-center justify-center rounded-xl bg-secondary">
-              <GraduationCap color="hsl(280, 55%, 38%)" size={18} />
+              <GraduationCap color="hsl(162, 72%, 34%)" size={18} />
             </View>
             <View className="flex-1">
               <Text weight="semibold">Your coaching fee</Text>
@@ -154,7 +154,7 @@ export default function InvestScreen() {
               size="icon"
               accessibilityLabel="Decrease coaching fee"
               onPress={() => setCoachingFee(coachingFee - 5)}>
-              <Minus color="hsl(280, 55%, 38%)" size={20} />
+              <Minus color="hsl(162, 72%, 34%)" size={20} />
             </Button>
             <View className="items-center">
               <Text size="3xl" weight="bold">
@@ -169,7 +169,7 @@ export default function InvestScreen() {
               size="icon"
               accessibilityLabel="Increase coaching fee"
               onPress={() => setCoachingFee(coachingFee + 5)}>
-              <Plus color="hsl(280, 55%, 38%)" size={20} />
+              <Plus color="hsl(162, 72%, 34%)" size={20} />
             </Button>
           </View>
           {coachingFee > 0 && (
@@ -237,7 +237,7 @@ export default function InvestScreen() {
                         <Text size="lg" weight="bold">
                           {a.percent}%
                         </Text>
-                        <ChevronRight color="hsl(280, 12%, 65%)" size={18} />
+                        <ChevronRight color="hsl(165, 12%, 65%)" size={18} />
                       </View>
                     </View>
                     <Progress value={a.percent} className="mt-3 h-1.5" />
@@ -260,7 +260,7 @@ export default function InvestScreen() {
               onPress={() => router.push(`/fund/${fund.id}`)}>
               <Card className="flex-row items-center gap-3 p-4">
                 <View className="h-10 w-10 items-center justify-center rounded-xl bg-secondary">
-                  <TrendingUp color="hsl(280, 55%, 38%)" size={20} />
+                  <TrendingUp color="hsl(162, 72%, 34%)" size={20} />
                 </View>
                 <View className="flex-1">
                   <Text weight="semibold" numberOfLines={1}>
@@ -270,7 +270,7 @@ export default function InvestScreen() {
                     {fund.return5y}% / yr · {fund.category}
                   </Text>
                 </View>
-                <ChevronRight color="hsl(280, 12%, 65%)" size={18} />
+                <ChevronRight color="hsl(165, 12%, 65%)" size={18} />
               </Card>
             </Pressable>
           ))}

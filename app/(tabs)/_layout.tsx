@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { BookOpen, Sparkles, TrendingUp, User } from 'lucide-react-native';
+import { BookOpen, Mic, Sparkles, TrendingUp, User } from 'lucide-react-native';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { NAV_THEME } from '@/lib/constants';
@@ -41,6 +41,13 @@ export default function TabLayout() {
         options={{
           title: 'Glossary',
           tabBarIcon: ({ color, size }) => <Sparkles color={color} size={size ?? 22} />,
+        }}
+      />
+      <Tabs.Screen
+        name="coach"
+        options={{
+          title: 'Coach',
+          tabBarIcon: ({ color, size }) => <Mic color={color} size={size ?? 22} />,
         }}
       />
       <Tabs.Screen

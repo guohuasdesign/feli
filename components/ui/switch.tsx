@@ -35,10 +35,11 @@ export interface SwitchProps extends VariantProps<typeof switchVariants> {
   onCheckedChange: (checked: boolean) => void;
   disabled?: boolean;
   className?: string;
+  accessibilityLabel?: string;
 }
 
 export const Switch = React.forwardRef<React.ComponentRef<typeof Pressable>, SwitchProps>(
-  ({ checked, onCheckedChange, disabled, size = 'default', className }, ref) => {
+  ({ checked, onCheckedChange, disabled, size = 'default', className, accessibilityLabel }, ref) => {
     const progress = useDerivedValue(
       () => withSpring(checked ? 1 : 0, SPRING_CONFIGS.snappy),
       [checked],
@@ -77,6 +78,7 @@ export const Switch = React.forwardRef<React.ComponentRef<typeof Pressable>, Swi
         }}
         disabled={disabled}
         accessibilityRole="switch"
+        accessibilityLabel={accessibilityLabel}
         accessibilityState={{ checked, disabled }}
         className={cn(disabled && 'opacity-50')}
       >

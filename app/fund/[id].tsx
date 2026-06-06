@@ -83,7 +83,7 @@ export default function FundScreen() {
           accessibilityLabel="Close"
           onPress={() => router.back()}
           className="h-11 w-11 items-center justify-center">
-          <X color="hsl(280, 12%, 55%)" size={24} />
+          <X color="hsl(165, 12%, 55%)" size={24} />
         </Pressable>
       </View>
 
@@ -99,7 +99,7 @@ export default function FundScreen() {
           <View className="mt-4 flex-row gap-3">
             <Card className="flex-1 p-4">
               <View className="flex-row items-center gap-1.5">
-                <TrendingUp color="hsl(280, 55%, 38%)" size={16} />
+                <TrendingUp color="hsl(162, 72%, 34%)" size={16} />
                 <Text size="2xl" weight="bold">
                   {fund.return5y}%
                 </Text>
@@ -148,7 +148,7 @@ export default function FundScreen() {
             {fund.highlights.map((h) => (
               <View key={h} className="flex-row items-center gap-2">
                 <View className="h-5 w-5 items-center justify-center rounded-full bg-secondary">
-                  <Check color="hsl(280, 55%, 38%)" size={14} />
+                  <Check color="hsl(162, 72%, 34%)" size={14} />
                 </View>
                 <Text size="sm" className="flex-1">
                   {h}

@@ -53,7 +53,7 @@ export default function GlossaryScreen() {
             value={query}
             onChangeText={setQuery}
             placeholder="Search terms"
-            leftIcon={<Search color="hsl(280, 12%, 55%)" size={18} />}
+            leftIcon={<Search color="hsl(165, 12%, 55%)" size={18} />}
           />
         </View>
 
@@ -106,7 +106,7 @@ export default function GlossaryScreen() {
                       </View>
                       <Animated.View
                         style={{ transform: [{ rotate: isOpen ? '180deg' : '0deg' }] }}>
-                        <ChevronDown color="hsl(280, 12%, 55%)" size={20} />
+                        <ChevronDown color="hsl(165, 12%, 55%)" size={20} />
                       </Animated.View>
                     </View>
                   </Pressable>
@@ -122,9 +122,9 @@ export default function GlossaryScreen() {
                         onPress={() => toggleSaved(t.term)}
                         className="mt-3 flex-row items-center gap-1.5 self-start rounded-full bg-secondary px-3 py-1.5">
                         <Bookmark
-                          color="hsl(280, 55%, 38%)"
+                          color="hsl(162, 72%, 34%)"
                           size={16}
-                          fill={isSaved ? 'hsl(280, 55%, 38%)' : 'transparent'}
+                          fill={isSaved ? 'hsl(162, 72%, 34%)' : 'transparent'}
                         />
                         <Text size="sm" weight="medium" className="text-secondary-foreground">
                           {isSaved ? 'Saved' : 'Save'}
