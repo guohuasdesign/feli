@@ -12,6 +12,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: true,
         tabBarActiveTintColor: theme.primary,
         tabBarInactiveTintColor: theme.text + '8C',
         tabBarStyle: {
@@ -21,9 +22,9 @@ export default function TabLayout() {
           paddingTop: 10,
           paddingBottom: 8,
         },
-        tabBarItemStyle: { paddingTop: 2 },
+        tabBarItemStyle: { paddingTop: 2, flexDirection: 'column' },
         tabBarLabelStyle: { fontFamily: 'Inter_500Medium', fontSize: 11, marginTop: 4 },
-        tabBarIconStyle: { marginBottom: 0 },
+        tabBarIconStyle: { marginBottom: 0, display: 'flex' },
       }}>
       <Tabs.Screen
         name="index"
