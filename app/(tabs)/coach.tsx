@@ -30,6 +30,7 @@ export default function VoiceCoachScreen() {
   const setVoiceId = useProgressStore((s) => s.setVoiceId);
   const autoplay = useProgressStore((s) => s.voiceAutoplay);
   const setAutoplay = useProgressStore((s) => s.setVoiceAutoplay);
+  const markCoached = useProgressStore((s) => s.markCoached);
 
   const keyMissing = !hasElevenLabsKey();
   const scrollRef = useRef<ScrollView>(null);
@@ -52,6 +53,7 @@ export default function VoiceCoachScreen() {
   const ask = (topic: CoachTopic) => {
     if (Platform.OS !== 'web') void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setAsked((a) => (a.includes(topic.id) ? a : [...a, topic.id]));
+    markCoached();
     setTurns((t) => [
       ...t,
       { kind: 'you', id: `q-${topic.id}`, text: topic.prompt },

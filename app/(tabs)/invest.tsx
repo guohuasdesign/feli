@@ -10,6 +10,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
+import { NextStepCard } from '@/components/NextStepCard';
 import { FUNDS, useProgressStore } from '@/lib/store';
 import {
   blendedEsg,
@@ -34,6 +35,12 @@ export default function InvestScreen() {
   const coachingFee = useProgressStore((s) => s.coachingFee);
   const setCoachingFee = useProgressStore((s) => s.setCoachingFee);
   const allocation = useProgressStore((s) => s.allocation);
+  const completed = useProgressStore((s) => s.completedLessons);
+  const savedPlan = useProgressStore((s) => s.savedPlan);
+  const trackedProgress = useProgressStore((s) => s.trackedProgress);
+  const coachedThisCycle = useProgressStore((s) => s.coachedThisCycle);
+  const loopsClosed = useProgressStore((s) => s.loopsClosed);
+  const markPlanSaved = useProgressStore((s) => s.markPlanSaved);
   const { toast } = useToast();
 
   const [years, setYears] = useState(20);
@@ -61,6 +68,14 @@ export default function InvestScreen() {
           <Text variant="muted" size="sm" className="mt-1">
             See what steady, values-led investing can grow into.
           </Text>
+        </View>
+
+        {/* Closed-loop next step */}
+        <View className="mt-4">
+          <NextStepCard
+            loop={{ completedLessons: completed, savedPlan, trackedProgress, coachedThisCycle, loopsClosed }}
+            hideCtaForStage="invest"
+          />
         </View>
 
         {/* Projection card */}
@@ -286,7 +301,8 @@ export default function InvestScreen() {
 
         <Button
           className="mt-6"
-          onPress={() =>
+          onPress={() => {
+            markPlanSaved();
             toast({
               variant: 'success',
               title: 'Plan saved',
@@ -294,8 +310,8 @@ export default function InvestScreen() {
                 coachingFee > 0
                   ? `${formatEur(invested)}/mo invested + ${formatEur(coachingFee)} coaching — you've got this.`
                   : `${formatEur(monthly)}/mo — you've got this.`,
-            })
-          }>
+            });
+          }}>
           <Text>Save my plan</Text>
         </Button>
       </ScrollView>

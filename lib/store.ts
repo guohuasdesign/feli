@@ -34,6 +34,16 @@ type ProgressState = {
   /** Auto-play the coach's voice as new lines appear. */
   voiceAutoplay: boolean;
 
+  // ---- Closed-loop engagement state (Learn -> Invest -> Track -> Coach) ----
+  /** User has saved an investment plan in the current cycle. */
+  savedPlan: boolean;
+  /** User has reviewed their progress page since saving a plan this cycle. */
+  trackedProgress: boolean;
+  /** User has asked the coach at least one question this cycle. */
+  coachedThisCycle: boolean;
+  /** Number of fully completed Learn->Invest->Track->Coach cycles. */
+  loopsClosed: number;
+
   completeLesson: (lessonId: string, points: number) => void;
   toggleSavedTerm: (term: string) => void;
   setOnboarded: (name: string) => void;
@@ -42,6 +52,12 @@ type ProgressState = {
   setAllocation: (allocation: Allocation[]) => void;
   setVoiceId: (id: string) => void;
   setVoiceAutoplay: (on: boolean) => void;
+  /** Mark the Invest stage done for this cycle. */
+  markPlanSaved: () => void;
+  /** Mark the Track stage done for this cycle. */
+  markProgressTracked: () => void;
+  /** Mark the Coach stage done; if all stages done, close the loop and reset cycle. */
+  markCoached: () => void;
   reset: () => void;
 };
 
@@ -70,6 +86,11 @@ export const useProgressStore = create<ProgressState>()(
       voiceId: DEFAULT_VOICE_ID,
       voiceAutoplay: false,
 
+      savedPlan: false,
+      trackedProgress: false,
+      coachedThisCycle: false,
+      loopsClosed: 0,
+
       completeLesson: (lessonId, points) => {
         const { completedLessons, points: cur, activeDays } = get();
         if (completedLessons.includes(lessonId)) return;
@@ -97,6 +118,27 @@ export const useProgressStore = create<ProgressState>()(
       setVoiceId: (id) => set({ voiceId: id }),
       setVoiceAutoplay: (on) => set({ voiceAutoplay: on }),
 
+      markPlanSaved: () => set({ savedPlan: true }),
+      markProgressTracked: () => {
+        // Only counts as a tracked step once a plan exists this cycle.
+        if (get().savedPlan) set({ trackedProgress: true });
+      },
+      markCoached: () => {
+        const { savedPlan, trackedProgress, loopsClosed } = get();
+        // A coach visit always counts toward the current cycle.
+        if (savedPlan && trackedProgress) {
+          // All four stages done -> close the loop and start a fresh cycle.
+          set({
+            coachedThisCycle: false,
+            savedPlan: false,
+            trackedProgress: false,
+            loopsClosed: loopsClosed + 1,
+          });
+        } else {
+          set({ coachedThisCycle: true });
+        }
+      },
+
       reset: () =>
         set({
           completedLessons: [],
@@ -114,6 +156,10 @@ export const useProgressStore = create<ProgressState>()(
           ],
           voiceId: DEFAULT_VOICE_ID,
           voiceAutoplay: false,
+          savedPlan: false,
+          trackedProgress: false,
+          coachedThisCycle: false,
+          loopsClosed: 0,
         }),
     }),
     {

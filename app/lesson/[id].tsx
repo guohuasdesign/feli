@@ -13,6 +13,7 @@ import { Card } from '@/components/ui/card';
 import { PlayButton } from '@/components/PlayButton';
 import { MODULES, type DialogueStep } from '@/lib/content';
 import { useProgressStore } from '@/lib/store';
+import { nextStep } from '@/lib/loop';
 import { useVoice } from '@/hooks/useVoice';
 import { hasElevenLabsKey } from '@/lib/elevenlabs';
 
@@ -24,6 +25,11 @@ export default function LessonScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const completeLesson = useProgressStore((s) => s.completeLesson);
   const alreadyDone = useProgressStore((s) => s.completedLessons.includes(id ?? ''));
+  const completedLessons = useProgressStore((s) => s.completedLessons);
+  const savedPlan = useProgressStore((s) => s.savedPlan);
+  const trackedProgress = useProgressStore((s) => s.trackedProgress);
+  const coachedThisCycle = useProgressStore((s) => s.coachedThisCycle);
+  const loopsClosed = useProgressStore((s) => s.loopsClosed);
   const voiceId = useProgressStore((s) => s.voiceId);
   const voiceAutoplay = useProgressStore((s) => s.voiceAutoplay);
   const setVoiceAutoplay = useProgressStore((s) => s.setVoiceAutoplay);
@@ -117,6 +123,15 @@ export default function LessonScreen() {
   const atEnd = stepIndex >= lesson.dialogue.length;
 
   if (finished) {
+    const loopStep = nextStep({
+      completedLessons: completedLessons.includes(lesson.id)
+        ? completedLessons
+        : [...completedLessons, lesson.id],
+      savedPlan,
+      trackedProgress,
+      coachedThisCycle,
+      loopsClosed,
+    });
     return (
       <SafeAreaView className="flex-1 bg-background">
         <View className="flex-1 items-center justify-center px-8">
@@ -141,11 +156,26 @@ export default function LessonScreen() {
                 {lesson.takeaway}
               </Text>
             </Card>
+
+            {/* Closed-loop nudge: send the user to the next stage */}
+            <View className="mt-6 w-full flex-row items-center gap-2 rounded-2xl bg-primary/10 p-3">
+              <Text size="lg">{loopStep.stageIndex === 1 ? '📈' : loopStep.stageIndex === 2 ? '🌟' : loopStep.stageIndex === 3 ? '🎧' : '📖'}</Text>
+              <Text size="sm" className="flex-1 text-foreground">
+                Next in your loop: {loopStep.body}
+              </Text>
+            </View>
           </Animated.View>
         </View>
-        <View className="px-5 pb-8">
-          <Button onPress={() => router.back()}>
-            <Text>Keep going</Text>
+        <View className="gap-3 px-5 pb-8">
+          <Button
+            onPress={() => {
+              router.back();
+              setTimeout(() => router.push(loopStep.route as never), 60);
+            }}>
+            <Text>{loopStep.cta}</Text>
+          </Button>
+          <Button variant="outline" onPress={() => router.back()}>
+            <Text>Back to lessons</Text>
           </Button>
         </View>
       </SafeAreaView>

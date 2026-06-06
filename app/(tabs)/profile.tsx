@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -24,6 +24,12 @@ export default function ProfileScreen() {
   const savedTerms = useProgressStore((s) => s.savedTerms);
   const displayName = useProgressStore((s) => s.displayName);
   const reset = useProgressStore((s) => s.reset);
+  const markProgressTracked = useProgressStore((s) => s.markProgressTracked);
+
+  // Track stage of the loop: viewing progress (after saving a plan) advances it.
+  useEffect(() => {
+    markProgressTracked();
+  }, [markProgressTracked]);
 
   const streak = useMemo(() => computeStreak(activeDays), [activeDays]);
   const pct = progressPercent(completed.length);

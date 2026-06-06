@@ -9,6 +9,7 @@ import { Text } from '@/components/ui/text';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { NextStepCard } from '@/components/NextStepCard';
 import { AFFIRMATIONS, MODULES } from '@/lib/content';
 import { computeStreak, progressPercent, useProgressStore } from '@/lib/store';
 import { cn } from '@/lib/utils';
@@ -19,6 +20,10 @@ export default function LearnScreen() {
   const points = useProgressStore((s) => s.points);
   const displayName = useProgressStore((s) => s.displayName);
   const onboarded = useProgressStore((s) => s.onboarded);
+  const savedPlan = useProgressStore((s) => s.savedPlan);
+  const trackedProgress = useProgressStore((s) => s.trackedProgress);
+  const coachedThisCycle = useProgressStore((s) => s.coachedThisCycle);
+  const loopsClosed = useProgressStore((s) => s.loopsClosed);
 
   useEffect(() => {
     if (!onboarded) {
@@ -95,6 +100,14 @@ export default function LearnScreen() {
 
         <View className="mt-3">
           <Progress value={pct} className="h-2" />
+        </View>
+
+        {/* Closed-loop next step */}
+        <View className="mt-5">
+          <NextStepCard
+            loop={{ completedLessons: completed, savedPlan, trackedProgress, coachedThisCycle, loopsClosed }}
+            hideCtaForStage="learn"
+          />
         </View>
 
         {/* Modules */}
