@@ -1,6 +1,9 @@
 // ElevenLabs text-to-speech client for FELI's voice coach.
-// Calls the ElevenLabs API directly from the app (no backend), so the key is
-// exposed via EXPO_PUBLIC_ELEVENLABS_API_KEY. Returns a data URI playable by expo-audio.
+// Calls the ElevenLabs API directly from the app (no backend). The key is read
+// from EXPO_PUBLIC_ELEVENLABS_API_KEY (build-time inlined) with a runtime
+// fallback to expo-constants `extra.elevenLabsApiKey` so it survives sandbox
+// env injection that happens after the bundler starts.
+import Constants from 'expo-constants';
 
 const API_BASE = 'https://api.elevenlabs.io/v1';
 
@@ -17,7 +20,11 @@ export const VOICE_OPTIONS = [
 const MODEL_ID = 'eleven_multilingual_v2';
 
 function getApiKey(): string | undefined {
-  return process.env.EXPO_PUBLIC_ELEVENLABS_API_KEY;
+  const fromEnv = process.env.EXPO_PUBLIC_ELEVENLABS_API_KEY;
+  if (fromEnv) return fromEnv;
+  const fromExtra = (Constants.expoConfig?.extra as { elevenLabsApiKey?: string } | undefined)
+    ?.elevenLabsApiKey;
+  return fromExtra || undefined;
 }
 
 export function hasElevenLabsKey(): boolean {

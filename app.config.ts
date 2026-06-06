@@ -33,6 +33,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     extra: {
       appStoreAppId: process.env.BILT_APP_STORE_APP_ID,
+      // Read at config-eval time (Node) from the sandbox shell env, then exposed
+      // to the app at runtime via expo-constants. Avoids stale build-time inlining.
+      elevenLabsApiKey:
+        process.env.EXPO_PUBLIC_ELEVENLABS_API_KEY ?? process.env.ELEVENLABS_API_KEY,
     },
     plugins: ['expo-router', 'expo-font', 'expo-audio', ...nativePlugins],
     experiments: {
